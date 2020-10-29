@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+
+####################################
+#### SETUP    REDIS   CONTAINER ####
+####################################
+    redis:
+        image: redis:alpine
+        ports:
+            - "6379"
+        networks:
+            - poll-tier
+            - back-tier
+        restart: always
+####################################
+#### SETUP POLL FLASK CONTAINER ####
+####################################
+    poll:
+        build:
+            context: ./poll
+        environment:
+            FLASK_DEV: developement
+        ports:
+            - "5000:80"
+        depends_on: 
+            - redis
+        networks:
+            - poll-tier
+        restart: always
+
+#####################################
+#### SETUP RESULT NODE CONTAINER ####
+#####################################
+    result:
+        build: 
+            context: ./result
+        environment: 
+            NODE_DEV: developement
+        ports:
+            - "5001:80"
+        networks:
+            - result-tier
+        depends_on:
+            - db
+        restart: always
+
+####################################
+#### SETUP POLL JAVE  CONTAINER ####
+####################################
+    worker:
+        build: 
+            context: ./worker
+        environment: 
+            JAVA_DEV: developement
+        networks:
+            - back-tier
+        depends_on:
+            - db
+            - redis
+        restart: always
+
+####################################
+#### SETUP    DB      CONTAINER ####
+####################################
+    db:
+        image: postgres:alpine
+        ports:
+            - "5999:5999"
+        # env_file:
+        #     - database.env
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        volumes:
+            - db-data:/var/lib/postgresql/data
+            - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+        networks:
+            - result-tier
+            - back-tier
+        restart: always
+
+volumes:
+    db-data:
+        
+networks:
+    # poll -> redis
+    poll-tier:
+    # result -> db
+    result-tier:
+    # worker -> db + redis
+    back-tier:
+# adminer:
+#         image: adminer
+#         restart: always
+#         ports:
+#           - 8080:8080
+#docker-compose up

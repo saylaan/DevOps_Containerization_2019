@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+####################################
+#### SETUP POLL FLASK CONTAINER ####
+####################################
+    poll:
+        build:
+            context: .\poll\
+        expose: 
+            - "80"
+        ports:
+            - "5000:80"
+
+#####################################
+#### SETUP RESULT NODE CONTAINER ####
+#####################################
+    result:
+        build: 
+            context: .\result\
+        expose: 
+            - "80"
+        ports:
+            - "5001:80"
+####################################
+#### SETUP POLL FLASK CONTAINER ####
+####################################
+    worker:
+        build: 
+            context: .\worker\

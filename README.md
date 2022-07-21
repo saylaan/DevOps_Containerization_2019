@@ -7,17 +7,17 @@ Finally, the Node.js Result web application fetches the votes from the DB and di
 
 5 services:
 
-- poll:
-- build your poll image and redirect port 5000 of the host to the port 80 of the image.
-- redis:
-- use an existing image of redis and open port 6379
-- worker:
-- build your worker image.
-- db:
-- representing the database that will be used by the apps. You must use an existing image of
+1. poll:
+    - build your poll image and redirect port 5000 of the host to the port 80 of the image.
+2. redis:
+    - use an existing image of redis and open port 6379
+3. worker:
+    - build your worker image.
+4. db:
+    - representing the database that will be used by the apps. You must use an existing image of
 postgres. Database schema must be created during container first start.
-- result:
-- build your result image and redirect port 5001 of the host to the port 80 of the image.
+5. result:
+    - build your result image and redirect port 5001 of the host to the port 80 of the image.
 
 3 networks:
 

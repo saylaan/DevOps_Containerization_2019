@@ -24,4 +24,4 @@ postgres. Database schema must be created during container first start.
 1 volume:
  db-data will make the database data persistent, if the container dies.
 
-![alt text](https://github.com/saylaan/DevOps_Containerization_2019/blob/master/image.jpg?raw=true)
+![alt text](https://github.com/saylaan/DevOps_Containerization_2019/blob/master/T-DOP-600_docker.jpg?raw=true)
